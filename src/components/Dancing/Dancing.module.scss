@@ -1,0 +1,74 @@
+.lists {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 50px;
+	&:not(:last-child) {
+		margin-bottom: 28px;
+	}
+	@media (max-width: 500px) {
+		flex-direction: column;
+		gap: 16px;
+	}
+}
+.blockItem {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 32px;
+	@media (max-width: 500px) {
+		gap: 16px;
+	}
+	h4 {
+		margin: 0;
+	}
+}
+.list {
+	min-height: 50px;
+	padding: 20px;
+	border-radius: 8px;
+	border: 1px solid gray;
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+	width: 230px;
+}
+.button {
+	padding: 15px 20px;
+	border: 1px solid gray;
+	width: 100%;
+	border-radius: 8px;
+	transition: all 0.3s;
+}
+.addButton {
+	padding: 15px 20px;
+	width: 250px;
+	border: 1px solid gray;
+	@media (any-hover: hover) {
+		&:hover {
+			color: blue;
+			transition: all 0.3s;
+			border: 1px solid blue;
+		}
+	}
+	&:disabled {
+		color: gray;
+		cursor: default;
+		border: 1px solid transparent;
+	}
+}
+.item {
+}
+.borderBlue {
+	border: 1px solid blue;
+	color: blue;
+	background: #85ddf3;
+}
+.pairs {
+	min-height: 100px;
+	padding: 20px;
+	max-width: 400px;
+	margin: 0 auto;
+	border: 1px solid gray;
+	border-radius: 8px;
+}
