@@ -34,30 +34,19 @@ const dataWomens = [
 ]
 const Dancing = () => {
 	const [mens, setMens] = useState(() => dataMens)
-	const [womens, setWomens] = useState(() => dataWomens)
+	const [women, setWomen] = useState(() => dataWomens)
 	const [selectedMan, setSelectedMan] = useState(null)
 	const [selectedWoman, setSelectedWoman] = useState(null)
 	const [selectedPairs, setSelectedPairs] = useState(() => [])
 
-	function handleSelectedPersons(
-		id,
-		arrPersons,
-		selectedPerson,
-		setSelectedPerson,
-	) {
-		const findPerson = arrPersons.find((person) => person.id === id)
-		setSelectedPerson((prev) => prev?.id)
-		if (findPerson) {
-			if (selectedPerson === null) {
-				setSelectedPerson(findPerson)
-			} else if (findPerson.id === selectedPerson.id) {
-				setSelectedPerson(null)
-			} else {
-				setSelectedPerson(findPerson)
-			}
-		}
+	function handleSelectedMan(id) {
+		const findMan = mens.find((man) => man.id === id)
+		setSelectedMan((man) => (man?.id === findMan.id ? null : findMan))
 	}
-
+	function handleSelectedWoman(id) {
+		const findWoman = women.find((woman) => woman.id === id)
+		setSelectedWoman((woman) => (woman?.id === findWoman.id ? null : findWoman))
+	}
 	function addPairs() {
 		if (selectedMan !== null && selectedWoman !== null) {
 			setSelectedPairs((prev) => [
@@ -69,7 +58,7 @@ const Dancing = () => {
 				},
 			])
 			setMens((prev) => prev.filter((man) => man.id !== selectedMan.id))
-			setWomens((prev) => prev.filter((woman) => woman.id !== selectedWoman.id))
+			setWomen((prev) => prev.filter((woman) => woman.id !== selectedWoman.id))
 			setSelectedMan(null)
 			setSelectedWoman(null)
 		}
@@ -78,7 +67,7 @@ const Dancing = () => {
 		selectedMan == null ||
 		selectedWoman == null ||
 		mens.length === 0 ||
-		womens.length === 0
+		women.length === 0
 	return (
 		<div className="container">
 			<div>
@@ -103,14 +92,7 @@ const Dancing = () => {
 										className={`${styles.button} ${
 											selectedMan?.id === man.id ? styles.borderBlue : ''
 										}`}
-										onClick={() =>
-											handleSelectedPersons(
-												man.id,
-												mens,
-												selectedMan,
-												setSelectedMan,
-											)
-										}
+										onClick={() => handleSelectedMan(man.id)}
 									>
 										{man.name}
 									</button>
@@ -124,23 +106,16 @@ const Dancing = () => {
 				<div className={styles.blockItem}>
 					<h4>Дівчата </h4>
 					<ul className={styles.list}>
-						{womens.length !== 0 ? (
-							womens.map((woman) => (
+						{women.length !== 0 ? (
+							women.map((w) => (
 								<button
-									key={woman.id}
+									key={w.id}
 									className={`${styles.button} ${
-										selectedWoman?.id === woman.id ? styles.borderBlue : ''
+										selectedWoman?.id === w.id ? styles.borderBlue : ''
 									}`}
-									onClick={() =>
-										handleSelectedPersons(
-											woman.id,
-											womens,
-											selectedWoman,
-											setSelectedWoman,
-										)
-									}
+									onClick={() => handleSelectedWoman(w.id)}
 								>
-									{woman.name}
+									{w.name}
 								</button>
 							))
 						) : (

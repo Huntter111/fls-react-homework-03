@@ -56,7 +56,11 @@
 .red {
 	border: 1px solid red;
 	background-color: rgba(199, 62, 62, 0.5);
-
+	@media (any-hover: hover) {
+		&:hover {
+			border: 1px solid red;
+		}
+	}
 	&:disabled {
 		color: black;
 	}

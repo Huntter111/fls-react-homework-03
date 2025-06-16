@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 
 import styles from './Translator.module.scss'
+import { shuffleArray } from '../../utils/shuffleArray'
+import clsx from 'clsx'
 const wordsData = [
 	{ id: 0, en: 'table', ua: 'стіл' },
 	{ id: 1, en: 'car', ua: 'автомобіль' },
@@ -17,17 +19,21 @@ const wordsData = [
 ]
 
 const Translator = () => {
-	function shuffleArray(array) {
-		return [...array].sort(() => Math.random() - 0.5)
-	}
 	const [englishWords, setEnglishWords] = useState(() => [])
 	const [ukrainianWords, setUkrainianWords] = useState(() => [])
 	const [selectedEnWord, setSelectedEnWord] = useState(null)
 	const [selectedUaWord, setSelectedUaWord] = useState(null)
 
-	const [border, setBorder] = useState(null)
+	// const [border, setBorder] = useState(null)
 	const [buttonDisabled, setButtonDisabled] = useState(false)
 	const [reset, setReset] = useState(false)
+	const isMatch =
+		selectedEnWord &&
+		selectedUaWord &&
+		wordsData.find(
+			(word) =>
+				word.en === selectedEnWord.word && word.ua === selectedUaWord.word,
+		)
 
 	useEffect(() => {
 		const enWords = wordsData.map((wordItem) => ({
@@ -54,7 +60,6 @@ const Translator = () => {
 					selectedEnWord.word === findWord.en &&
 					selectedUaWord.word === findWord.ua
 				) {
-					setBorder(styles.green)
 					timerId = setTimeout(() => {
 						setEnglishWords((prev) =>
 							prev.filter((item) => item.word !== selectedEnWord.word),
@@ -64,14 +69,12 @@ const Translator = () => {
 						)
 						setSelectedEnWord(null)
 						setSelectedUaWord(null)
-						setBorder(null)
+
 						setButtonDisabled(false)
-					}, 500) // Для візуального відображення перевірки
+					}, 700) // Для візуального відображення перевірки
 				} else {
-					setBorder(styles.red)
 					setButtonDisabled(true)
 					timerId = setTimeout(() => {
-						setBorder(null)
 						setSelectedEnWord(null)
 						setSelectedUaWord(null)
 						setButtonDisabled(false)
@@ -119,11 +122,13 @@ const Translator = () => {
 						>
 							<button
 								disabled={buttonDisabled}
-								className={`${styles.button} ${
-									selectedEnWord?.id === word.id ? styles.borderBlue : ''
-								}
-									${border && selectedEnWord?.id === word.id ? border : ''}
-									`}
+								className={clsx(
+									styles.button,
+									selectedEnWord?.id === word.id && styles.borderBlue,
+									selectedEnWord?.id === word.id &&
+										selectedUaWord &&
+										(isMatch ? styles.green : styles.red),
+								)}
 								onClick={() => handleSelectedEnWord(word.id)}
 							>
 								{word.word}
@@ -139,10 +144,13 @@ const Translator = () => {
 						>
 							<button
 								disabled={buttonDisabled}
-								className={`${styles.button} ${
-									selectedUaWord?.id === word.id ? styles.borderBlue : ''
-								}
-							${border && selectedUaWord?.id === word.id ? border : ''}`}
+								className={clsx(
+									styles.button,
+									selectedUaWord?.id === word.id && styles.borderBlue,
+									selectedUaWord?.id === word.id &&
+										selectedEnWord &&
+										(isMatch ? styles.green : styles.red),
+								)}
 								onClick={() => handleSelectedUaWord(word.id)}
 							>
 								{word.word}
